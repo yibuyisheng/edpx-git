@@ -1,0 +1,25 @@
+/**
+ * @file git push
+ * @author yibuyisheng(yibuyisheng@163.com)
+ */
+
+require('colors');
+var helper = require('../../lib/helper');
+var config = require('../../lib/config') || {};
+
+exports.cli = {
+    description: '包装一下 git push',
+    main: function (args, opts) {
+        var stashPop = helper.execPromise.bind(null, 'git stash pop');
+        helper.execPromise('git stash')
+            .then(function () {
+                return helper.execPromise('git pull --rebase ' + (config.upstream ? config.upstream.split('/').join(' ') : 'bat master'));
+            }).then(function () {
+                return helper.execPromise(helper.restoreCmdFromArgv(process.argv));
+            }).then(function (result) {
+                helper.print(result);
+            }).catch(function (error) {
+                helper.print('[git push error]', error);
+            }).then(stashPop, stashPop);
+    }
+};
