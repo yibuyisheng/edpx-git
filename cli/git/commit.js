@@ -3,24 +3,26 @@
  * @author yibuyisheng(yibuyisheng@163.com)
  */
 
-require('colors');
+var colorsSafe = require('colors/safe');
 var helper = require('../../lib/helper');
 
 exports.cli = {
     description: '包装一下 git commit',
     main: function (args, opts) {
-        checkJs().then(function () {
-            return helper.execPromise(helper.restoreCmdFromArgv(process.argv));
-        }).catch(function (error) {
-            helper.print('[git commit error]'.red.bold, error);
-        });
+        checkJs()
+            .then(function () {
+                return helper.execPromise(helper.restoreCmdFromArgv(process.argv));
+            })
+            .catch(function (error) {
+                helper.print(colorsSafe.red(error.message));
+            });
     }
 };
 
 function checkJs() {
     return helper.execPromise('git diff --cached --name-only')
         .then(function (result) {
-            var changedFiles = result.split(/\s/).filter(function (file) {
+            var changedFiles = result.stdout.split(/\s/).filter(function (file) {
                 return file && /\.js$/.test(file);
             });
 
@@ -34,6 +36,5 @@ function checkJs() {
             if (/fecs  (ERROR)|(WARN) /.test(result)) {
                 throw new Error(result);
             }
-            return;
         });
 }

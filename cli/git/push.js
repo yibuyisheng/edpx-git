@@ -16,14 +16,8 @@ exports.cli = {
                 return helper.execPromise('git pull --rebase ' + upstream);
             }).then(function () {
                 return helper.execPromise(helper.restoreCmdFromArgv(process.argv));
-            }).catch(function (error) {
-                helper.print('[git push error]'.red.bold);
-                helper.print(error.message);
             }).then(function () {
                 return helper.execPromise('git stash pop');
-            }).catch(function (error) {
-                helper.print('[git push error]'.red.bold);
-                helper.print(error.message);
             });
     }
 };
