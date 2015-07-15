@@ -12,9 +12,9 @@ exports.cli = {
         checkJs().then(function () {
             return helper.execPromise(helper.restoreCmdFromArgv(process.argv));
         }).then(function (result) {
-            console.log(result);
+            helper.print(result);
         }).catch(function (error) {
-            console.log('[git commit error]'.red.bold, error);
+            helper.print('[git commit error]'.red.bold, error);
         });
     }
 };

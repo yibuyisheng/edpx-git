@@ -9,9 +9,9 @@ exports.cli = {
     main: function (args, opts) {
         helper.execPromise(helper.restoreCmdFromArgv(process.argv))
             .then(function (result) {
-                console.log(result ? result : '');
+                helper.print(result ? result : '');
             }, function (error) {
-                console.log(error.message);
+                helper.print(error.message);
             });
     }
 };
