@@ -13,13 +13,14 @@ exports.cli = {
         var stashPop = helper.execPromise.bind(null, 'git stash pop');
         helper.execPromise('git stash')
             .then(function () {
-                return helper.execPromise('git pull --rebase ' + (config.upstream ? config.upstream.split('/').join(' ') : 'bat master'));
+                var upstream = (config.upstream ? config.upstream.split('/').join(' ') : 'bat master');
+                return helper.execPromise('git pull --rebase ' + upstream);
             }).then(function () {
                 return helper.execPromise(helper.restoreCmdFromArgv(process.argv));
             }).then(function (result) {
                 helper.print(result);
             }).catch(function (error) {
-                helper.print('[git push error]', error);
+                helper.print('[git push error]'.red.bold, error);
             }).then(stashPop, stashPop);
     }
 };
