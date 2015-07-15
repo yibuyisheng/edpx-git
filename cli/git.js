@@ -4,13 +4,12 @@
  */
 
 var helper = require('../lib/helper');
+
 exports.cli = {
     description: '主命令',
     main: function (args, opts) {
         helper.execPromise(helper.restoreCmdFromArgv(process.argv))
-            .then(function (result) {
-                helper.print(result ? result : '');
-            }, function (error) {
+            .catch(function (error) {
                 helper.print(error.message);
             });
     }

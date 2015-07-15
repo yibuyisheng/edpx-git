@@ -11,8 +11,6 @@ exports.cli = {
     main: function (args, opts) {
         checkJs().then(function () {
             return helper.execPromise(helper.restoreCmdFromArgv(process.argv));
-        }).then(function (result) {
-            helper.print(result);
         }).catch(function (error) {
             helper.print('[git commit error]'.red.bold, error);
         });
@@ -31,7 +29,8 @@ function checkJs() {
             }
 
             return helper.execPromise('fecs ' + changedFiles.join(' ') + ' --reporter=baidu --type=js');
-        }).then(function (result) {
+        })
+        .then(function (result) {
             if (/fecs  (ERROR)|(WARN) /.test(result)) {
                 throw new Error(result);
             }
