@@ -18,7 +18,9 @@ exports.cli = {
             }).then(function () {
                 return helper.execPromise(helper.restoreCmdFromArgv(process.argv));
             }).catch(function (error) {
-                helper.print('[git push error]'.red.bold, error);
+                helper.print('[git push error]'.red.bold);
+                helper.print(error.message);
+                helper.print(error.stdout ? error.stdout : '');
             }).then(stashPop, stashPop);
     }
 };
