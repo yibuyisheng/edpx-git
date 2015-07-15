@@ -10,7 +10,6 @@ var config = require('../../lib/config') || {};
 exports.cli = {
     description: '包装一下 git push',
     main: function (args, opts) {
-        var stashPop = helper.execPromise.bind(null, 'git stash pop');
         helper.execPromise('git stash')
             .then(function () {
                 var upstream = (config.upstream ? config.upstream.split('/').join(' ') : 'bat master');
@@ -20,7 +19,11 @@ exports.cli = {
             }).catch(function (error) {
                 helper.print('[git push error]'.red.bold);
                 helper.print(error.message);
-                helper.print(error.stdout ? error.stdout : '');
-            }).then(stashPop, stashPop);
+            }).then(function () {
+                return helper.execPromise('git stash pop');
+            }).catch(function (error) {
+                helper.print('[git push error]'.red.bold);
+                helper.print(error.message);
+            });
     }
 };
