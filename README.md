@@ -8,8 +8,9 @@
 
 # 系统要求
 
-* git
 * node 0.12.*
+* edp 1.1.1
+* git
 * [fecs](https://github.com/ecomfe/fecs/)
 
 # 安装
