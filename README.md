@@ -4,13 +4,27 @@
 
 使用 edp 对 git 命令进行一层封装，可以做一些提交之前的预处理。
 
-目前只对 git commit 做了预处理，在 commit 之前会检查已修改的 js 文件的代码格式。其余的 edp git 命令与 git 命令一致。
+目前包含的功能：
+
+* **git commit**
+
+    在 commit 之前会对修改的 js 文件做规范检查。如果检查不通过，则拒绝 commit ；如果检查通过，则成功 commit 。
+
+* **git push**
+
+    在 push 之前主要会做一次 rebase ，具体要 rebase 远程哪个分支，可以在项目根目录下的 edp-git-config.js 中配置，例如：
+
+    ```js
+    module.exports = {
+        upstream: 'origin/master'
+    };
+    ```
 
 # 系统要求
 
-* node 0.12.*
-* edp 1.1.1
-* git
+* [node 0.12.*](https://nodejs.org/)
+* [edp 1.1.1](https://github.com/ecomfe/edp)
+* [git](https://git-scm.com/)
 * [fecs](https://github.com/ecomfe/fecs/)
 
 # 安装
