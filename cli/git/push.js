@@ -10,14 +10,14 @@ var config = require('../../lib/config') || {};
 exports.cli = {
     description: '包装一下 git push',
     main: function (args, opts) {
-        helper.execPromise('git stash')
+        helper.spawnPromise('git', ['stash'])
             .then(function () {
-                var upstream = (config.upstream ? config.upstream.split('/').join(' ') : 'bat master');
-                return helper.execPromise('git pull --rebase ' + upstream);
+                var upstream = config.upstream.split('/');
+                return helper.spawnPromise('git', ['pull', '--rebase', upstream[0], upstream[1]]);
             }).then(function () {
-                return helper.execPromise(helper.restoreCmdFromArgv(process.argv));
+                return helper.spawnPromise(process.argv[2], process.argv.slice(3));
             }).then(function () {
-                return helper.execPromise('git stash pop');
+                return helper.spawnPromise('git', ['stash', 'pop']);
             });
     }
 };
